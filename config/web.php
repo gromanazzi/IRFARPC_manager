@@ -4,7 +4,7 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
-    'id' => 'basic',
+    'id' => 'IRFARPC',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -51,6 +51,9 @@ $config = [
         ],
         */
     ],
+    'language' => 'it-IT',
+    'name' => 'IRFARPC Manager',
+    'sourceLanguage' => 'it-IT',
     'params' => $params,
 ];
 

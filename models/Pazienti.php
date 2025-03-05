@@ -41,8 +41,9 @@ class Pazienti extends \yii\db\ActiveRecord
         return [
             [['cognome', 'nome', 'data_nascita', 'data_p_visita', 'fpc_mut'], 'required'],
             [['data_nascita', 'data_p_visita', 'data_arruol'], 'safe'],
-            [['capostipite', 'arruol_p_visit', 'fpc_mut', 'sorv_rad'], 'integer'],
+            [['fpc_mut', 'sorv_rad'], 'boolean'],
             [['cognome', 'nome'], 'string', 'max' => 250],
+            [['capostipite, id_reg'], 'integer'],
             [['capostipite'], 'exist', 'skipOnError' => true, 'targetClass' => Pazienti::class, 'targetAttribute' => ['capostipite' => 'paziente_id']],
         ];
     }
@@ -53,31 +54,86 @@ class Pazienti extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'paziente_id' => 'ID Paziente',
+            'paziente_id' => 'ID',
             'cognome' => 'Cognome',
             'nome' => 'Nome',
             'data_nascita' => 'Data di nascita',
             'capostipite' => 'Capostipite',
             'data_p_visita' => 'Data Prima Visita',
-            'arruol_p_visit' => 'Arruolato Prima Visita',
+            'id_reg' => "ID Registro",
             'data_arruol' => 'Data Arruolamento',
             'fpc_mut' => 'FPC / Mutati',
             'sorv_rad' => 'Sorveglianza Radiologica',
         ];
     }
 
+    public function gridColumns()
+    {
+        return [
+            'paziente_id',
+            'cognome',
+            'nome',
+            [
+                'attribute' => 'data_nascita',
+                'format' => ['date', 'php:d/m/Y']
+            ],
+            [
+                'attribute' => 'capostipite',
+                'value' => function ($model) {
+                    return $model->getNomeCapostipite();
+                }
+            ],
+            [
+                'attribute' => 'data_p_visita',
+                'format' => ['date', 'php:d/m/Y']
+            ],
+            'id_reg',
+            [
+                'attribute' => 'data_arruol',
+                'format' => ['date', 'php:d/m/Y']
+            ],
+            'fpc_mut',
+            'sorv_rad'
+        ];
+    }
+
     /**
-     * Gets query for [[Capostipite0]].
+     * Get query to retrieve all patients
+     * 
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPazienti()
+    {
+        return $this->find()->all();
+    }
+
+
+    /**
+     * Gets query for [[Capostipite]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCapostipite0()
+    public function getCapostipite()
     {
         return $this->hasOne(Pazienti::class, ['paziente_id' => 'capostipite']);
     }
 
     /**
-     * Gets query for [[Pazientis]].
+     * Return capostipite name
+     * 
+     * @return string
+     */
+
+    public function getNomeCapostipite()
+    {
+        $capostipite = $this->getCapostipite()->one();
+        return $capostipite ?
+            $capostipite->cognome . ' ' . $capostipite->nome :
+            'Nope';
+    }
+
+    /**
+     * Gets query for [[Pazienti]].
      *
      * @return \yii\db\ActiveQuery
      */
@@ -87,7 +143,7 @@ class Pazienti extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Risonanzes]].
+     * Gets query for [[Risonanze]].
      *
      * @return \yii\db\ActiveQuery
      */

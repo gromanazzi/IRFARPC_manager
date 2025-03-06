@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Pazienti;
+use yii\debug\components\search\Filter;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
@@ -8,7 +9,7 @@ $this->title = 'Anagrafica Pazienti';
 $this->params['breadcrumbs'][] = $this->title;
 $model = new Pazienti();
 $labels = $model->attributes();
-$pazienti = $model->getPazienti();
+//$pazienti = $model->getPazienti();
 
 ?>
 
@@ -29,7 +30,10 @@ $pazienti = $model->getPazienti();
     </tbody>
 </table> -->
 <?php //print_r($pazienti); 
+$filter = new Filter();
 echo GridView::widget([
     'dataProvider' => $dataProvider,
-    'columns' => $columns
+    'columns' => $columns, 
+    'filterModel' => $searchModel,
+    'filterPosition' => 'body',
 ]);

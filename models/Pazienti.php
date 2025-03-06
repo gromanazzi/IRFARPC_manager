@@ -75,7 +75,8 @@ class Pazienti extends \yii\db\ActiveRecord
             'nome',
             [
                 'attribute' => 'data_nascita',
-                'format' => ['date', 'php:d/m/Y']
+                'format' => ['date', 'php:d/m/Y'],
+                'headerOptions' => ['style' => 'white-space: normal;'],
             ],
             [
                 'attribute' => 'capostipite',
@@ -85,18 +86,23 @@ class Pazienti extends \yii\db\ActiveRecord
             ],
             [
                 'attribute' => 'data_p_visita',
-                'format' => ['date', 'php:d/m/Y']
+                'format' => ['date', 'php:d/m/Y'],
+                'headerOptions' => ['style' => 'white-space: normal;'],
             ],
             'id_reg',
             [
                 'attribute' => 'data_arruol',
-                'format' => ['date', 'php:d/m/Y']
+                'format' => ['date', 'php:d/m/Y'],
+                'headerOptions' => ['style' => 'white-space: normal;'],
             ],
             'fpc_mut',
-            'sorv_rad'
+            [
+                'attribute' => 'sorv_rad',
+                'headerOptions' => ['style' => 'white-space: normal;'],
+            ]
         ];
     }
-
+    
     /**
      * Get query to retrieve all patients
      * 
